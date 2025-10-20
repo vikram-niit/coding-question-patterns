@@ -30,11 +30,15 @@ The goal is to place `N` queens on an `N×N` chessboard such that no two queens 
 
 ```bash
 $ python n_queens.py
+```
 
-2. Enter number of queens when prompted:
+### 2. Enter number of queens when prompted:
+```
 Enter the number of queens: 4
+```
 
-3. Example Output:
+### 3. Example Output:
+```
 Number of solutions = 2
 
 Solution 1:
@@ -48,15 +52,18 @@ Solution 2:
 Q
    Q
  Q
+```
 
-🧠 Concepts Used
+🧠 ### Concepts Used
 
-Backtracking
+- Backtracking
 
-Recursion
+- Recursion
 
-Array-based board representation (each index is a row, value is column)
+- Array-based board representation (each index is a row, value is column)
 
-📂 File Structure
+📂 ### File Structure
+```
 n_queens.py      # Main Python script
 README.md        # Project documentation
+```
