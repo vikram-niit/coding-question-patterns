@@ -54,7 +54,7 @@ Q
  Q
 ```
 
-🧠 ### Concepts Used
+### Concepts Used
 
 - Backtracking
 
@@ -62,8 +62,9 @@ Q
 
 - Array-based board representation (each index is a row, value is column)
 
-📂 ### File Structure
+### File Structure
 ```
 n_queens.py      # Main Python script
 README.md        # Project documentation
 ```
+
