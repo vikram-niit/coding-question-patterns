@@ -1,62 +1,34 @@
-\# Cycle Detection in Linked List
+# Cycle Detection in Linked List
 
+This project demonstrates how to detect a cycle in a singly linked list using the **Fast and Slow Pointer** (Floyd’s Tortoise and Hare) algorithm.
 
+## 🚀 Algorithm
+- Use two pointers:
+  - **Slow pointer** moves one step at a time.
+  - **Fast pointer** moves two steps at a time.
+- If the list has a cycle, the two pointers will eventually meet.
+- If the fast pointer reaches the end (`None`), the list has no cycle.
 
-This project demonstrates how to detect a cycle in a singly linked list using the \*\*Fast and Slow Pointer\*\* (Floyd’s Tortoise and Hare) algorithm.
-
-
-
-\## 🚀 Algorithm
-
-\- Use two pointers:
-
-&nbsp; - \*\*Slow pointer\*\* moves one step at a time.
-
-&nbsp; - \*\*Fast pointer\*\* moves two steps at a time.
-
-\- If the list has a cycle, the two pointers will eventually meet.
-
-\- If the fast pointer reaches the end (`None`), the list has no cycle.
-
-
-
-\## 🧩 Code Example
-
+## 🧩 Code Example
 ```python
-
 def hasCycle(head):
-
-&nbsp;   slow = fast = head
-
-&nbsp;   while fast and fast.next:
-
-&nbsp;       slow = slow.next
-
-&nbsp;       fast = fast.next.next
-
-&nbsp;       if slow == fast:
-
-&nbsp;           return True
-
-&nbsp;   return False
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+```
 
 
 
-🕒 Complexity
-
-
+## 🕒 Complexity
 
 Time: O(n)
 
-
-
 Space: O(1)
 
-
-
-📘 Reference
-
-
+## 📘 Reference
 
 Floyd’s Cycle Detection Algorithm (Tortoise and Hare)
-
