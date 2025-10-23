@@ -52,10 +52,11 @@ print(apply_range_updates(arr, updates))
 
 ## 🕒 Complexity
 
-Prefix Sum Query: O(1)
+- Prefix Sum Query: O(1)
 
-Range Update: O(1) per query
+- Range Update: O(1) per query
 
-Build Time: O(n)
+- Build Time: O(n)
+
 
 
