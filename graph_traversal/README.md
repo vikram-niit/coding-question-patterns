@@ -19,12 +19,12 @@ A simple Python implementation of **DFS** for graphs using an adjacency list.
 
 ## Example
 Edges:
-0 -> 1
-0 -> 2
-1 -> 2
-2 -> 0
-2 -> 3
-3 -> 3
+0 -> 1 
+0 -> 2 
+1 -> 2 
+2 -> 0 
+2 -> 3 
+3 -> 3 
 
 DFS starting from node 2 outputs:
 2 0 1 3
