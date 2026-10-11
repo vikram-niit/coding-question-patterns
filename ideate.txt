@@ -1,0 +1,597 @@
+Two Pointers — sorted arrays, pairs, palindromes
+Example: Two Sum II, 3Sum, Container With Most Water
+Sliding Window — contiguous subarrays/substrings
+Example: Longest Substring Without Repeating Characters
+Hash Map / Frequency Counting — lookup, duplicates, frequencie+s
+Example: Two Sum, Group Anagrams, Subarray Sum Equals K
+Prefix Sum — range sums, subarray conditions
+Example: Subarray Sum Equals K
+Stack / Monotonic Stack — matching, next greater/smaller
+Example: Valid Parentheses, Daily Temperatures
+Binary Search — sorted data or a monotonic answer space
+Example: Search in Rotated Sorted Array, Koko Eating Bananas
+Fast & Slow Pointers — linked lists/cycles
+Example: Linked List Cycle, Middle of Linked List
+Linked List Manipulation — reverse, merge, detect cycles
+Example: Reverse Linked List, Merge Two Sorted Lists
+Trees: DFS/BFS — traversal, depth, paths
+Example: Maximum Depth, Level Order Traversal
+Graphs — BFS/DFS, connected components, shortest paths
+Example: Number of Islands, Clone Graph
+Heap / Priority Queue — top K, smallest/largest, scheduling
+Example: Kth Largest Element, Top K Frequent Elements
+Backtracking — generate all possibilities
+Example: Subsets, Permutations, Combination Sum
+Dynamic Programming — overlapping subproblems + optimal decisions
+Example: Climbing Stairs, House Robber, Coin Change
+Greedy — make the locally optimal choice
+Example: Jump Game, Activity/Interval Scheduling
+Intervals — merge, overlap, scheduling
+Example: Merge Intervals, Meeting Rooms
+Best order to learn
+Arrays/Hashing → Two Pointers → Sliding Window → Stack → Binary Search → Linked Lists → Trees → Heap → Graphs → Backtracking → DP
+
+Two Pointers - done
+Sliding window - done
+HashMap - done
+Prefix sum - done
+Fast and slow pointers - done
+
+Stack - done
+Binary search - done
+Linked list - done
+Trees(DFS/BFS, traversals, depth) - done
+Heap/Priority queue - done
+
+Graphs(BFS/DFS, connected components, shortest paths) - TODO
+Backtracking - done
+Dynamic programming - TODO
+Greedy - TODO
+Intervals - TODO
+
+Searching - linear search, binary search  - TODO
+Sorting - merge sort, quick sort, heap sort - TODO
+String matching - horspool's algorithm - TODO
+
+
+1. n-queens problem
+The problem is about placing n queens on a nxn chessboard such that no two queens attack each other. The goal is to find as many such solutions as possible.
+
+Approach: Backtracking = recursion + loop
+
+def solve(row, x):
+	if row == n:
+		print_solution(x)
+		return
+
+	for col in range(len(row)):
+		# advance the position of the queen in the row
+		x[row] += 1
+		# check if the position is safe
+		if is_safe(row, x):
+			solve(row + 1, x)
+
+def is_safe(row, x):
+	for i in range(0, row):
+		if i + row == x[i] + x[row]:
+			return False
+		elif abs(i - row]) == abs(x[i] - x[row]):
+			return False
+		else:
+			return True
+
+def print_solution(x):
+	for i in range(n):
+		for j in range(n):
+			if j == x[i]:
+				print("Q")
+			else:
+				print("-")
+
+
+if __name__ == '__main__':
+	n = 5
+	x = [-1] * n
+	solve(0, x)
+
+
+
+
+2. Find the nth highest using heap
+
+Approach: Maintain a min heap containing the top n items
+add a new item and pop the item from the heap
+After all the items are attempted to be added. Pop the element which would be the nth highest item
+
+
+
+import heapq
+
+def nth_highest(x):
+	for i in range(len(x)):
+		heapq.heappush(x, x[i])
+		heapq.pop(x)
+
+	return heapq.pop(x)
+
+
+if __name__ == '__main__':
+	x = [50, 100, 500, 250, 150]
+	y = nth_highest(x)
+	print(f"nth_highest = {y}")
+	
+
+3. Depth first search entails traversing all the nodes in the graph such that the nodes are visited in a depth first order i.e. each child node of the parent would be traversed first recursively before visiting its siblings.
+
+def dfs(graph, node, visited):
+	# if node is in visited skip and continue
+	if node in visited:
+		return
+
+	# add node to visited
+	visited.add(node)
+	result.append(node)
+
+	for child in graph[node]:
+		dfs(graph, child, visited)
+
+
+if __name__ == '__main__':
+	graph = {
+			'A': ['B', 'C', 'F'],
+			'B': ['D']
+			'D': ['E']
+}
+	visited = set()
+	dfs(graph, 0, visited)
+	print(f"dfs -> {result}")
+
+
+4. Breadth first search
+def bfs(graph, node, visited):
+	# maintain a queue 
+	# while queue is not empty
+	# delete item from queue and traverse its child nodes
+	while len(bfs_queue) != 0:
+		node = bfs_queue.pop()
+		for child in graph[node]:
+			if child not in visited:
+				visited.add(child)
+				bfs_queue.append(child)
+				result.append(child)
+
+if __name__ == '__main__':
+	visited = set()
+	result = []
+	bfs_queue = []
+	graph = {
+			"A": ["B", "C", "D"],
+			"B": ["E", "F", "G"],
+			"C": ["H" , "I", "J"]
+}
+		
+
+5. Find max sum subarray
+
+def find_max_sum_sub_array(x, k):
+	window_sum = sum(x[0:k])
+	max_sum = window_sum
+	left = 0
+	
+	for i in range(k, len(x)):
+		window_sum += x[i]
+		window_sum -= x[i-k]
+
+		# update max_sum
+		if window_sum > max_sum:
+			max_sum = window_sum
+			left = i
+
+	return max_sum, left
+	
+
+if __name__ == '__main__':
+	x = [1, 5, 3, 2, 4]
+	k = 3
+	max_sub_array_sum, left_index = find_max_sum_sub_array(x, k)
+	print(f"max_sub_array_sum = {max_sub_array_sum}, left_index = {left_index}, max_sub_array = x[left_index:k]")
+
+
+6. Longest substring without repeating characters
+
+def find_longest_substring_Without_repeating_characters(s):
+	left = 0
+	right = 0
+	result = []
+
+	characters = set()
+	for i in range(len(s)):
+		if s[i] not in characters:
+			characters.add(s[i])
+			right = i
+		elif s[i] in characters:
+			result.append((left - right + 1), (left, right))
+			left = i
+			right += 1
+	
+	return max(result, key=0)
+
+7. Container with most water
+
+def max_area(heights):
+	left = 0
+	right = len(heights) - 1
+	max_area = 0
+
+	while left <= right:
+		current_area = min(heights[left], heights[right]) * (right - left)
+		max_area = max(current_area, max_area)
+		
+		if (heights[left + 1] < heights[right - 1]):
+			 left += 1
+		else:
+			right -= 1
+
+	return max_area
+
+
+if __name__ == '__main__':
+	x = [1, 4, 10, 7, 8]
+	print(f"result = {max_area(x)}")
+
+
+8. Count of subarrays with sum k
+
+def count_subarray_sum(nums, k):
+	current_sum = 0
+	prefix_sum = 0
+	count = 0
+
+	freq = {0: 1}
+
+	for num in nums:
+		prefix_sum += num
+
+		needed = prefix_sum - k
+
+		if needed in freq:
+			count += freq[needed]
+		freq[prefix_sum] = freq.get(prefix_sum, 0) + 1
+
+	return count
+
+
+if __name__ == '__main__':
+	nums = [1, 3, 2, 4, 5, 4]
+	k = 9
+	print(f"Number of subarrays with sum {k} = {count_subarray_sum(nums, k)}")
+
+9. find cycle in linked list
+
+class Node:
+	def __init__(self, data, next):
+		self.data = data
+		self.next = next
+
+
+def find_linked_list_cycle(node):
+	fast_node = slow_node = node
+
+	while fast_node != None || slow_node != None:
+		if slow_node == fast_node:
+			return True
+		fast_node = fast_node.next.next
+		slow_node = slow_node.next
+		
+
+if __name__ = '__main__':
+	linked_list = root = None
+	for i in range(10):
+		node = Node(i, None)
+		
+		linked_list.next = node
+		
+
+	find_linked_list_cycle(linked_list)
+
+
+10. Horspool's string matching problem
+
+def horspool(text, pattern):
+	# create a shift table
+	s = []
+	n = len(text)
+	for i in range(len(text)):
+		s[text[i]] = n - 1 - i
+		
+	# match the pattern against the text
+	i = n - 1
+	j = len(pattern) - 1
+	
+	k = 0
+	while j > 0 and I > 0:
+		 while text[i - k] == pattern[j - k]:
+			k = k + 1
+		
+	
+		#shift if pattern doesn't match	
+		if text[I - k ] != pattern[j-k]:
+			I = s[pattern[j-k]
+
+	if j - k == 0: 
+		found = true
+		index = I - k
+		
+	else: 
+		found = false
+		index = -1
+
+	return found, index
+
+
+if __name__ == '__main__':
+	text = "The cat chased the mice"
+	pattern =  "mice"
+
+	found, index = horspool(text, pattern)
+	if found:
+		print(f"Pattern found at index {index}")
+	else:
+		print(f"Pattern not found")
+
+
+11. def valid_parantheses(expression):
+	stack_list = []
+	for c in expression:
+		if c == '(':
+			stack.push(c)
+		elif c == ')':
+			stack.pop()
+
+	if stack.empty():
+		return True
+	return False
+
+if __name__ == '__main__':
+	expression = '((()))()(())'
+	valid = valid_parantheses(expression)
+
+	if valid == True:
+		print(f"The expression has valid parantheses")
+	else:
+		print(f"The expression has invalid parantheses")
+		
+	
+
+12. def binary_search(numbers, key):
+	low = 0
+	high = len(numbers) - 1
+	
+	while low < high:
+		mid = (low + high) / 2
+		if numbers[mid] <= key:
+			high = mid - 1
+		elif numbers[mid] > key:
+			low = mid+ 1
+		elif numbers[mid] == key:
+			return mid
+					
+	if low == high and numbers[low] == key:
+		return low
+	else:
+		return -1
+
+if __name__ =='__main__':
+	x = [100,200,300,400,500,600,700,800,900,1000]
+	key = 800
+	search_index = binary_search(x, key)
+
+	if search_index != -1:
+		print(f"Key found at position {search_index}")
+	else:
+		print(f"Key not found")
+		
+	 
+13. MST (Minimum Spanning Tree)
+Kruskal's algorithm
+
+def Kruskal(edges, vertices):
+	# sort the edges by their weights
+	# choose n - 1 edges in ascending order
+
+	parent = {v: v for v in vertices}
+
+	def find(v):
+		if parent[v] != v:
+			parent[v] = find(parent[v])
+		return v
+
+	def union(u, v):
+		root_u = find(u)
+		root_v = find(v)
+		if (find(u) == find(v)):
+			return False
+
+		parent[root_v] = root_u
+		return True
+	
+	result = []
+	edges.sort(key=lambda x: x[1])
+
+	for edge, weight in range(edges):
+		u, v = edge
+		if union(u, v):
+			result.append((edge, weight))
+			if len(result) == len(vertices - 1):
+				break
+
+	return result
+
+
+if __name__ == '__main__':
+	edges = [(['A', 'B'], 6),
+		(['B', 'C'], 7),
+		(['D', 'E'], 8),
+		(['E', 'A'], 9),
+		(['E', 'F'], 10)]
+
+	vertices = ['A', 'B', 'C', 'D', 'E', 'F']
+
+	Kruskal(edges, vertices)
+			
+
+14. Prim's algorithm
+
+# start with a vertex
+# Then choose the shortest distance neighbour
+# Then from the neighbour choose its shortest distance neighbour 
+# repeat the process until n - 1 vertices are covered
+def prims(graph):
+	result = []
+	for vertex in graph:
+		# select shortest distance neighbour
+		neighbours = graph[vertex]
+		edge, weight = min(neighbours, key = lambda x: x[1])			
+		result.append(vertex, (edge, weight))
+	
+	return result
+		
+
+if __name__ == '__main__':
+	graph = {
+			'A': (['A', 'B'], 6), (['A', 'C'], 5), (['A', 'D'], 4)]
+			'D': (['D', 'E'], 20),
+
+			
+}
+
+# graph is an adjacency list
+def prims(graph):
+	start = 0
+	min_heap = [0, start, -1]
+	visited = set()
+	mst = []
+	total += 0
+
+	while heap:
+		weight, vertex, parent = heapq.heappop(min_heap)
+
+		if vertex in visited:
+			continue
+
+		visited.add(vertex)
+		total += 1
+		if weight != 0 and parent != -1:
+			mst.append(parent, vertex, weight)
+			
+			
+
+		for neighbour, weight in graph[vertex]:
+			if neighbour not in visited:
+				heapq.heappush(min_heap, (weight, neighbour, vertex))
+
+	return result, total
+
+
+# Graph as an adjacency list
+graph = {
+    0: [(1, 2), (3, 6)],
+    1: [(0, 2), (2, 3), (3, 8), (4, 5)],
+    2: [(1, 3), (4, 7)],
+    3: [(0, 6), (1, 8), (4, 9)],
+    4: [(1, 5), (2, 7), (3, 9)]
+}
+
+mst, total = prim(graph)
+
+print("Edges in MST:")
+for u, v, w in mst:
+    print(f"{u} - {v} : {w}")
+
+print("Total weight:", total)			
+			
+	
+	
+15. Djikstra's algorithm
+
+import heapq
+
+def djikstra(graph):
+	# holds (distance from start vertex to the current vertex, vertex)
+	shortest_distance_heap = []
+	# push the start vertex into the heap with distance = 0
+	heapq.heappush(shortest_distance_heap, (0, 'A'))
+	
+	while len(heap) > 0:
+		current_min_distance_from_source, current_vertex = heapq.heappop(shortest_distance_heap)
+
+		if current_min_distance_from_source > 
+		
+		# update the distance from source for all the neighbours of the current vertex
+		for vertex, weight in graph[current_vertex]:
+			vertex_distance_from_source = current_min_distance_from_source + weight
+			heapq.heappush(shortest_distance_heap, (vertex_distance_from_source, vertex)
+
+	return current_min_distance_from_source
+
+
+if __name__ == '__main__':
+	graph = {
+		'A': [('B', 5), ('C', 10)]
+		'B': [('C', 3)]
+	}
+		
+There are several issues. The main ones are:
+
+heap should be shortest_distance_heap.
+
+Missing comma after ('C', 10).
+
+Missing ) in heappush.
+
+You need a distance dictionary to track shortest known distances.
+
+Dijkstra should skip stale heap entries.
+
+Your function currently returns the last popped distance, not the shortest distances to all vertices.
+
+Typo: djikstra → dijkstra.
+
+A corrected version:		
+import heapq
+
+def dijkstra(graph, start):
+    distances = {vertex: float('inf') for vertex in graph}
+    distances[start] = 0
+
+    heap = [(0, start)]
+
+    while heap:
+        current_distance, current_vertex = heapq.heappop(heap)
+
+        # Ignore outdated heap entries
+        if current_distance > distances[current_vertex]:
+            continue
+
+        for vertex, weight in graph[current_vertex]:
+            new_distance = current_distance + weight
+
+            if new_distance < distances[vertex]:
+                distances[vertex] = new_distance
+                heapq.heappush(heap, (new_distance, vertex))
+
+    return distances
+
+
+if __name__ == '__main__':
+    graph = {
+        'A': [('B', 5), ('C', 10)],
+        'B': [('C', 3)],
+        'C': []
+    }
+
+    print(dijkstra(graph, 'A'))
+
+
+
+	
